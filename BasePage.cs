@@ -11,45 +11,78 @@ namespace VeeamTest
 {
     public class BasePage
     {
-        IWebDriver driver = WebDriver.Driver;
+        IWebDriver driver;
+        public BasePage()
+        {
+            this.driver = WebDriver.Driver;
+            Load();
+        }
         
         private const string PageUrl = "https://careers.veeam.com/";
 
-        private By CountriesList => By.Id("country-element");
+        public By CountriesDropDown => By.Id("country-element");
 
-        private By CitiesList => By.Id("city-element");
+        public By CitiesDropDown => By.Id("city-element");
 
-        private By DepartementsList => By.Id("department-element");
+        public By DepartementsDropDown => By.Id("department-element");
 
-        private By LanguagesList => By.Id("language");
+        public By LanguagesDropDown => By.Id("language");
 
-        public bool Load()
+        private By LanguagesDropDownApply = By.ClassName("selecter-fieldset-submit");
+
+        public By JobSearchResults = By.CssSelector(".vacancies-blocks .text-center-md-down");
+
+        public BasePage Load()
         {
             driver.Navigate().GoToUrl(PageUrl);
-            var checkLoad = GenericHelper.GetElement(By.CssSelector(".navbar-brand img"));
-
-            return checkLoad != null;
+            _ = GenericHelper.GetElement(By.CssSelector(".navbar-brand img"));
+            return this;
         }
 
-
-        public bool SelectByText(IWebElement element, string whatToSelect)
+        public BasePage SelectItemByText(By locator, string textToSelect)
         {
-            string findPattern = string.Format("//span[contains(text(), '{0}')]", whatToSelect);
+            if (textToSelect == "blank")
+                return this;
 
-            element.FindElement(By.Id("selecter-selected")).Click();
-            var el = element.FindElement(By.XPath(findPattern));
-            el.Click();
-            return true;
+            var dropDown = ActivateDropDown(locator);
+            By itemLocator = By.XPath(string.Format("//span[contains(text(), '{0}')]", textToSelect));
+            SelectItemInDropDown(dropDown, itemLocator);
+            
+            return this;
         }
 
-        public bool SelectDepartment()
+        public BasePage SelectCheckBoxById(By locator, string idToSelect)
         {
-            Select(DepartementsList, "sales");
-            return true;
+            if (idToSelect == "blank")
+                return this;
+
+            var dropDown = ActivateDropDown(locator);
+            By checkBoxLocator = By.CssSelector(string.Format("#ch-{0} + span", idToSelect));
+            SelectItemInDropDown(dropDown, checkBoxLocator);
+            var applyBtn = GenericHelper.GetElement(LanguagesDropDownApply);
+            WaitHelper.WaitFor(applyBtn.Click);
+            return this;
         }
-        public void Select(IWebElement element, string byText)
+
+        public IWebElement ActivateDropDown(By locator)
         {
-            DropDownHelper.SelectElement(element, byText);
+            var dropDown = GenericHelper.GetElement(locator);
+            JSExecHelper.ScrollElementIntoView(dropDown);
+            WaitHelper.WaitFor(dropDown.Click);
+            return dropDown;
+        }
+
+        public void SelectItemInDropDown(IWebElement dropDown, By itemLocator)
+        {
+            var itemToSelect = GenericHelper.GetChildElement(dropDown, itemLocator);
+            WaitHelper.WaitFor(itemToSelect.Click, timeoutSec: 15);
+        }
+
+        public BasePage GetJobSearchResult(out string result)
+        {
+            var elem = GenericHelper.GetElement(JobSearchResults);
+            result = elem.GetAttribute("innerText");
+            return this;
         }
 
     }

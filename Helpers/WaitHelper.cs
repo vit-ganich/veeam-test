@@ -20,9 +20,19 @@ namespace VeeamTest.Helpers
             _wait.IgnoreExceptionTypes(typeof(NoSuchElementException),
                                        typeof(ElementNotVisibleException),
                                        typeof(ElementNotInteractableException),
+                                       typeof(StaleElementReferenceException),
                                        typeof(ElementClickInterceptedException));
 
             return _wait;
+        }
+
+        public static void WaitFor(Action action, int timeoutSec = DefaultTimeooutSec)
+        {
+            DefaultWait(timeoutSec).Until((d) =>
+            {
+                action();
+                return true;
+            });
         }
     }
 }

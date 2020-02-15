@@ -11,26 +11,30 @@ namespace VeeamTest.Helpers
     {
         public static IWebElement GetElement(By locator)
         {
-            return WaitHelper.DefaultWait().Until(d =>
+            var element = WaitHelper.DefaultWait().Until(d =>
             {
                 var elem = d.FindElement(locator);
 
-                if (elem != null && elem.Displayed)
+                if (elem != null)
                     return elem;
                 else
                     return null;
             });
+            return element ?? throw new NoSuchElementException(nameof(locator));
         }
 
-        public static IWebElement GetElement(IWebElement element)
+        public static IWebElement GetChildElement(IWebElement parent, By locator)
         {
-            return WaitHelper.DefaultWait().Until(d =>
+            var element = WaitHelper.DefaultWait().Until(d =>
             {
-                if (element != null && element.Displayed)
-                    return element;
+                var elem = parent.FindElement(locator);
+
+                if (elem != null)
+                    return elem;
                 else
                     return null;
             });
+            return element ?? throw new NoSuchElementException(nameof(locator));
         }
     }
 }

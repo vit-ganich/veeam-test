@@ -58,8 +58,12 @@
     <Compile Include="BaseTest.cs" />
     <Compile Include="Helpers\DropDownHelper.cs" />
     <Compile Include="Helpers\GenericHelper.cs" />
+    <Compile Include="Helpers\JSExecHelper.cs" />
     <Compile Include="Helpers\WaitHelper.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Options\ITestOptions.cs" />
+    <Compile Include="Options\OptionsFirefox.cs" />
+    <Compile Include="Options\OptionsChrome.cs" />
+    <Compile Include="SmokeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebDriver.cs" />
   </ItemGroup>
