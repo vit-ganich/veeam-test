@@ -1,18 +1,14 @@
 ﻿using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VeeamTest.Controls;
 using VeeamTest.Controls.IActions;
 
-namespace VeeamTest
+namespace VeeamTest.Base
 {
     public abstract class BasePage : IPage
     {
         public IWebDriver Driver { get; set; }
 
+        public abstract IPage Load();
 
         public IPage Click(IClickable control)
         {
@@ -22,8 +18,6 @@ namespace VeeamTest
             control.Click();
             return this;
         }
-
-        public abstract IPage Load();
 
         public IPage Select(ISelectable control, string value)
         {

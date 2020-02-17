@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
+using VeeamTest.Base;
 using VeeamTest.Controls.IActions;
 using VeeamTest.Controls.IControls;
-using VeeamTest.Helpers;
 
 namespace VeeamTest.Controls
 {
@@ -14,20 +14,14 @@ namespace VeeamTest.Controls
             if (value == "blank")
                 return this;
 
-            ActivateDropDown();
+            ExecuteJavaScript("arguments[0].scrollIntoView(true);");
+            WaitFor(Element.Click);
 
             string itemLocator = string.Format("//span[contains(text(), '{0}')]", value);
             var itemToSelect = GetChildElement(By.XPath(itemLocator));
 
-            WaitFor(itemToSelect.Click, timeoutSec: 15);
+            WaitFor(itemToSelect.Click);
             return this;
         }
-
-        protected void ActivateDropDown()
-        {
-            JSExecHelper.ScrollElementIntoView(Page.Driver, Element);
-            WaitFor(Element.Click);
-        }
-
     }
 }

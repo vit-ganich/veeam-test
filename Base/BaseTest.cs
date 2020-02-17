@@ -2,15 +2,14 @@
 using OpenQA.Selenium;
 using VeeamTest.Options;
 
-namespace VeeamTest
+namespace VeeamTest.Base
 {
     [SetUpFixture]
     public class BaseTest<TPage, TDriverOptions>
-        where TPage : IPage, new()
+        where TPage : BasePage, new()
         where TDriverOptions : ITestOptions, new()
     {
         private IWebDriver driver;
-
         private TDriverOptions options;
 
         protected TPage Page { get; set; }

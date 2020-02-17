@@ -1,8 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 
-namespace VeeamTest
+namespace VeeamTest.Base
 {
     public class BaseControl : IBaseControl
     {
@@ -25,7 +26,7 @@ namespace VeeamTest
             {
                 var elem = d.FindElement(Locator);
 
-                if (elem != null)
+                if (elem != null && elem.Enabled)
                     return elem;
                 else
                     return null;
@@ -80,6 +81,19 @@ namespace VeeamTest
                 else
                     return null;
             });
+        }
+
+        public void ExecuteJavaScript(string script, params object[] args)
+        {
+            IJavaScriptExecutor js = Page.Driver as IJavaScriptExecutor;
+            try
+            {
+                js.ExecuteScript(script, Element);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("JS script failed: " + ex.Message + Locator);
+            }
         }
     }
 }

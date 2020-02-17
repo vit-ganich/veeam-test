@@ -9,7 +9,7 @@ namespace VeeamTest.Options
         {
             var options = new FirefoxOptions();
             options.AcceptInsecureCertificates = true;
-            // options.AddArgument("--headless");
+            options.AddArgument("--headless"); // For Healdless mode
 
             var driver = new FirefoxDriver(options);
             driver.Manage().Window.Maximize();

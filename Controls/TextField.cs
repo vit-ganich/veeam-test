@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using VeeamTest.Base;
 using VeeamTest.Controls.IActions;
 
 namespace VeeamTest.Controls
@@ -9,11 +10,12 @@ namespace VeeamTest.Controls
 
         public string Read()
         {
-            return Element.GetAttribute("innerText");
+            return GetAttribute("innerText");
         }
 
         public IReadable Read(out string text)
         {
+            System.Threading.Thread.Sleep(1000);
             text = Read();
             return this;
         }

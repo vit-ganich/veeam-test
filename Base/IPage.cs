@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using VeeamTest.Controls.IActions;
 
-namespace VeeamTest
+namespace VeeamTest.Base
 {
     public interface IPage
     {

@@ -9,7 +9,7 @@ namespace VeeamTest.Options
         {
             var options = new ChromeOptions();
             options.AddArgument("--start-maximized");
-            options.AddArgument("--headless");
+            options.AddArguments("--headless", "--window-size=1920,1080"); // For Healdless mode
             return new ChromeDriver(options);
         }
     }
